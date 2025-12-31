@@ -16,5 +16,7 @@ target_include_directories (cmake_testapp_lib PUBLIC includes/general)
 find_library(TEST_LIBRARY cmake_testapp_lib lib)
 target_link_libraries(cmake_testapp LINK_PUBLIC ${TEST_LIBRARY})
 
+add_subdirectory(external)
+
 enable_testing()
 add_subdirectory(ctest)
