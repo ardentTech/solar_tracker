@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 4.1 FATAL_ERROR)
 add_executable(ctest_exe_addvalues_zero addvalues_zero.c)
 
 target_link_libraries(ctest_exe_addvalues_zero LINK_PUBLIC
-        cmake_testapp_lib
+        #cmake_testapp_lib
         unity
 )
 
