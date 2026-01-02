@@ -1,2 +1,5 @@
 add_executable(cmake_testapp
-        main.c)
+        main.c
+)
+
+target_link_libraries(cmake_testapp PUBLIC stm32)
