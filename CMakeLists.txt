@@ -17,9 +17,10 @@ enable_language(C ASM)
 #
 #find_library(TEST_LIBRARY cmake_testapp_lib lib)
 #target_link_libraries(cmake_testapp LINK_PUBLIC ${TEST_LIBRARY})
-
 add_subdirectory(external)
-add_subdirectory(src)
-
-enable_testing() # this will include(CTest)
-add_subdirectory(ctest)
+if(CMAKE_BUILD_TYPE STREQUAL "Test")
+    enable_testing() # this will include(CTest)
+    add_subdirectory(ctest)
+else()
+    add_subdirectory(src)
+endif()
