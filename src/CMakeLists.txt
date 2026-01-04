@@ -1,5 +1,7 @@
 add_executable(cmake_testapp
         main.c
+        rotary_encoder.c
+        stm32c0xx_it.c
 )
 
 target_link_libraries(cmake_testapp PUBLIC stm32)

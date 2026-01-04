@@ -20,6 +20,9 @@ target_compile_definitions(stm32 INTERFACE
 
 target_sources(stm32 PUBLIC
     stm32/Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal.c
+    stm32/Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal_adc.c
+    stm32/Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal_adc_ex.c
+    stm32/Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal_dma.c
     stm32/Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal_gpio.c
     stm32/Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal_cortex.c
     stm32/Drivers/CMSIS/Device/ST/STM32C0xx/Source/Templates/system_stm32c0xx.c
