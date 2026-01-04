@@ -1,13 +1,26 @@
-#include "stm32c031xx.h"
+#include "stm32c0xx_hal.h"
+
+extern void SysTick_Handler(void);
+void GPIO_PA5_Init(void);
+
+void GPIO_PA5_Init(void) {
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = GPIO_PIN_5;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+}
+
+void SysTick_Handler(void) { HAL_IncTick(); }
 
 int main(void) {
-    // code was verified in STM32CubeIDE and is OK
-    RCC->IOPENR |= 1U<<0;
-    GPIOA->MODER |= 1U<<10;
-    GPIOA->MODER &= ~(1U<<11);
+    HAL_Init();
+    GPIO_PA5_Init();
 
     while (1) {
-        GPIOA->ODR ^= 1U<<5;
-        for (int i = 0; i < 1000000; i++) {}
+        HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+        HAL_Delay(500);
     }
 }
