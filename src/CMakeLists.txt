@@ -2,6 +2,7 @@ add_executable(cmake_testapp
         main.c
         rotary_encoder.c
         stm32c0xx_it.c
+        stm32c0xx_hal_msp.c
         syscalls.c
         sysmem.c
 )

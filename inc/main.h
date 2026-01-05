@@ -11,12 +11,10 @@
 #define LED_Pin GPIO_PIN_5
 #define LED_Pin_GPIO_Port GPIOA
 
-#define Y_CLK_Pin GPIO_PIN_10
-#define Y_CLK_GPIO_Port GPIOA
-#define Y_CLK_EXTI_IRQn EXTI4_15_IRQn
-#define Y_DT_Pin GPIO_PIN_3
-#define Y_DT_GPIO_Port GPIOB
-#define Y_DT_EXTI_IRQn EXTI2_3_IRQn
+#define VCP_USART2_TX_Pin GPIO_PIN_2
+#define VCP_USART2_TX_GPIO_Port GPIOA
+#define VCP_USART2_RX_Pin GPIO_PIN_3
+#define VCP_USART2_RX_GPIO_Port GPIOA
 
 #define X_DT_Pin GPIO_PIN_6
 #define X_DT_GPIO_Port GPIOB
@@ -24,6 +22,13 @@
 #define X_CLK_Pin GPIO_PIN_7
 #define X_CLK_GPIO_Port GPIOB
 #define X_CLK_EXTI_IRQn EXTI4_15_IRQn
+
+#define Y_CLK_Pin GPIO_PIN_10
+#define Y_CLK_GPIO_Port GPIOA
+#define Y_CLK_EXTI_IRQn EXTI4_15_IRQn
+#define Y_DT_Pin GPIO_PIN_3
+#define Y_DT_GPIO_Port GPIOB
+#define Y_DT_EXTI_IRQn EXTI2_3_IRQn
 
 typedef enum {
     OTHER = 0,
@@ -42,6 +47,7 @@ typedef enum {
     TIM_PWM_INIT,
     TIM_PWM_START,
     TIM_SYNC,
+    UART_INIT,
 } AppError;
 
 #endif //CMAKE_TESTAPP_MAIN_H

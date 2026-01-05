@@ -3,13 +3,13 @@
 
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
+UART_HandleTypeDef huart2;
 
 // prototypes
-// extern void SysTick_Handler(void);
 void Error_Handler(AppError error);
-void GPIO_PA5_Init(void);
-void SystemClock_Config(void);
 void GPIO_Init(void);
+void SystemClock_Config(void);
+void UART_Init(void);
 
 // implementations
 void Error_Handler(const AppError error) {
@@ -25,10 +25,10 @@ void GPIO_Init(void) {
     /* USER CODE END MX_GPIO_Init_1 */
 
     /* GPIO Ports Clock Enable */
-    __HAL_RCC_GPIOC_CLK_ENABLE();
-    __HAL_RCC_GPIOF_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+    __HAL_RCC_GPIOF_CLK_ENABLE();
 
     /*Configure GPIO pin : Y_CLK_Pin */
     GPIO_InitStruct.Pin = Y_CLK_Pin;
@@ -89,17 +89,37 @@ void SystemClock_Config(void) {
     }
 }
 
-// void SysTick_Handler(void) { HAL_IncTick(); }
+void UART_Init(void) {
+    huart2.Instance = USART2;
+    huart2.Init.BaudRate = 115200;
+    huart2.Init.WordLength = UART_WORDLENGTH_8B;
+    huart2.Init.StopBits = UART_STOPBITS_1;
+    huart2.Init.Parity = UART_PARITY_NONE;
+    huart2.Init.Mode = UART_MODE_TX_RX;
+    huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+    huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+    huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+    huart2.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+    huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+    if (HAL_UART_Init(&huart2) != HAL_OK)
+    {
+        Error_Handler(UART_INIT);
+    }
+}
 
 int main(void) {
     HAL_Init();
     GPIO_Init();
+    UART_Init();
 
-    const RotaryEncoder pan_encoder = (RotaryEncoder){X_CLK_GPIO_Port, X_CLK_Pin, X_DT_GPIO_Port, X_DT_Pin, 0, 0};
-    const RotaryEncoder tilt_encoder = (RotaryEncoder){Y_CLK_GPIO_Port, Y_CLK_Pin, Y_DT_GPIO_Port, Y_DT_Pin, 0, 0};
+    //const RotaryEncoder pan_encoder = (RotaryEncoder){X_CLK_GPIO_Port, X_CLK_Pin, X_DT_GPIO_Port, X_DT_Pin, 0, 0};
+    //const RotaryEncoder tilt_encoder = (RotaryEncoder){Y_CLK_GPIO_Port, Y_CLK_Pin, Y_DT_GPIO_Port, Y_DT_Pin, 0, 0};
+
+    char data[] = {"jdb\r\n"};
 
     while (1) {
         HAL_GPIO_TogglePin(LED_Pin_GPIO_Port, LED_Pin);
+        HAL_UART_Transmit(&huart2, (uint8_t*)&data, 5, 0xffff);
         HAL_Delay(750);
     }
 }
