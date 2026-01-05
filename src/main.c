@@ -1,7 +1,18 @@
 #include "main.h"
+
+#include "FreeRTOSConfig.h"
+#include "FreeRTOS.h"
+#include "portmacro.h"
+#include "projdefs.h"
 #include "rotary_encoder.h"
+#include "task.h"
 
 #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+
+// In FreeRTOS, the stack size is specified in words.
+// * Our processor's word size is 4 bytes
+// * (128 * 4) = 512 bytes
+#define STACK_SIZE 128
 
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
@@ -10,6 +21,7 @@ UART_HandleTypeDef huart2;
 // prototypes
 void Error_Handler(AppError error);
 void GPIO_Init(void);
+void LedTask(void *argument);
 void SystemClock_Config(void);
 void UART_Init(void);
 
@@ -61,6 +73,11 @@ void GPIO_Init(void) {
     /* USER CODE BEGIN MX_GPIO_Init_2 */
 
     /* USER CODE END MX_GPIO_Init_2 */
+}
+
+void LedTask(void *argument) {
+    HAL_GPIO_TogglePin(LED_Pin_GPIO_Port, LED_Pin);
+    vTaskDelay(1500 / portTICK_PERIOD_MS);
 }
 
 void SystemClock_Config(void) {
@@ -116,6 +133,28 @@ PUTCHAR_PROTOTYPE
     return ch;
 }
 
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM1 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    /* USER CODE BEGIN Callback 0 */
+
+    /* USER CODE END Callback 0 */
+    if (htim->Instance == TIM1)
+    {
+        HAL_IncTick();
+    }
+    /* USER CODE BEGIN Callback 1 */
+
+    /* USER CODE END Callback 1 */
+}
+
 int main(void) {
     HAL_Init();
     GPIO_Init();
@@ -124,9 +163,9 @@ int main(void) {
     //const RotaryEncoder pan_encoder = (RotaryEncoder){X_CLK_GPIO_Port, X_CLK_Pin, X_DT_GPIO_Port, X_DT_Pin, 0, 0};
     //const RotaryEncoder tilt_encoder = (RotaryEncoder){Y_CLK_GPIO_Port, Y_CLK_Pin, Y_DT_GPIO_Port, Y_DT_Pin, 0, 0};
 
-    while (1) {
-        HAL_GPIO_TogglePin(LED_Pin_GPIO_Port, LED_Pin);
-        printf("howdy\r\n");
-        HAL_Delay(750);
-    }
+    // If the task isn't created successfully, main() will spin in the infinite while-loop.
+    if (xTaskCreate(LedTask, "GreenTask", STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL) != pdPASS){ while(1); }
+    vTaskStartScheduler();
+
+    while (1) {}
 }

@@ -4,3 +4,9 @@
 [submodule "external/stm32"]
 	path = external/stm32
 	url = https://github.com/STMicroelectronics/STM32CubeC0.git
+[submodule "external/freertos"]
+	path = external/freertos
+	url = https://github.com/ARM-software/CMSIS-FreeRTOS.git
+[submodule "external/cmsis_6"]
+	path = external/cmsis_6
+	url = https://github.com/ARM-software/CMSIS_6.git

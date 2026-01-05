@@ -7,6 +7,8 @@ add_executable(solar_tracker
         sysmem.c
 )
 
+target_link_libraries(solar_tracker PUBLIC freertos)
+target_link_libraries(solar_tracker PUBLIC cmsis6)
 target_link_libraries(solar_tracker PUBLIC stm32)
 
 target_include_directories(solar_tracker PUBLIC
