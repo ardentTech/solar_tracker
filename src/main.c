@@ -112,10 +112,7 @@ void UART_Init(void) {
 // normally in Drivers/BSP/STM32C0xx_Nucleo/stm32c0xx_nucleo.c
 PUTCHAR_PROTOTYPE
 {
-    /* Place your implementation of fputc here */
-    /* e.g. write a character to the USART1 and Loop until the end of transmission */
     HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
-
     return ch;
 }
 

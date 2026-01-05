@@ -1,4 +1,4 @@
-add_executable(cmake_testapp
+add_executable(solar_tracker
         main.c
         rotary_encoder.c
         stm32c0xx_it.c
@@ -7,8 +7,8 @@ add_executable(cmake_testapp
         sysmem.c
 )
 
-target_link_libraries(cmake_testapp PUBLIC stm32)
+target_link_libraries(solar_tracker PUBLIC stm32)
 
-target_include_directories(cmake_testapp PUBLIC
+target_include_directories(solar_tracker PUBLIC
     ../inc
 )
