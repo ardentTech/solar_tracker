@@ -1,6 +1,8 @@
 #include "main.h"
 #include "rotary_encoder.h"
 
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
 UART_HandleTypeDef huart2;
@@ -107,6 +109,16 @@ void UART_Init(void) {
     }
 }
 
+// normally in Drivers/BSP/STM32C0xx_Nucleo/stm32c0xx_nucleo.c
+PUTCHAR_PROTOTYPE
+{
+    /* Place your implementation of fputc here */
+    /* e.g. write a character to the USART1 and Loop until the end of transmission */
+    HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+
+    return ch;
+}
+
 int main(void) {
     HAL_Init();
     GPIO_Init();
@@ -115,11 +127,9 @@ int main(void) {
     //const RotaryEncoder pan_encoder = (RotaryEncoder){X_CLK_GPIO_Port, X_CLK_Pin, X_DT_GPIO_Port, X_DT_Pin, 0, 0};
     //const RotaryEncoder tilt_encoder = (RotaryEncoder){Y_CLK_GPIO_Port, Y_CLK_Pin, Y_DT_GPIO_Port, Y_DT_Pin, 0, 0};
 
-    char data[] = {"jdb\r\n"};
-
     while (1) {
         HAL_GPIO_TogglePin(LED_Pin_GPIO_Port, LED_Pin);
-        HAL_UART_Transmit(&huart2, (uint8_t*)&data, 5, 0xffff);
+        printf("howdy\r\n");
         HAL_Delay(750);
     }
 }
